@@ -663,7 +663,7 @@ JSScript* ScriptingCore::getScript(const char *path)
     if (filename_script.find(fullPath) != filename_script.end())
         return filename_script[fullPath];
 
-    return NULL;
+    return nullptr;
 }
 
 void ScriptingCore::compileScript(const char *path, JS::HandleObject global, JSContext* cx)
@@ -1946,6 +1946,12 @@ static void serverEntryPoint(unsigned int port)
 
     listen(s, 1);
 
+
+#define MAX_RECEIVED_SIZE 1024
+#define BUF_SIZE MAX_RECEIVED_SIZE + 1
+    
+    char buf[BUF_SIZE] = {0};
+    int readBytes = 0;
     while (true) {
         clientSocket = accept(s, NULL, NULL);
 
@@ -1962,10 +1968,8 @@ static void serverEntryPoint(unsigned int port)
             inData = "connected";
             // process any input, send any output
             clearBuffers();
-
-            char buf[1024] = {0};
-            int readBytes = 0;
-            while ((readBytes = (int)::recv(clientSocket, buf, sizeof(buf), 0)) > 0)
+            
+            while ((readBytes = (int)::recv(clientSocket, buf, MAX_RECEIVED_SIZE, 0)) > 0)
             {
                 buf[readBytes] = '\0';
                 // TRACE_DEBUGGER_SERVER("debug server : received command >%s", buf);
@@ -1979,6 +1983,9 @@ static void serverEntryPoint(unsigned int port)
             cc_closesocket(clientSocket);
         }
     } // while(true)
+    
+#undef BUF_SIZE
+#undef MAX_RECEIVED_SIZE
 }
 
 bool JSBDebug_BufferWrite(JSContext* cx, unsigned argc, jsval* vp)
