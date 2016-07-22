@@ -27,6 +27,7 @@
 #include "2d/CCSpriteFrameCache.h"
 #include "base/CCVector.h"
 #include "base/CCDirector.h"
+#include "base/ccUTF8.h"
 #include "renderer/CCGLProgram.h"
 #include "renderer/ccShaders.h"
 #include "platform/CCImage.h"
@@ -121,7 +122,7 @@ namespace ui {
             if(spriteFrameCache == nullptr) break;
             
             SpriteFrame *frame = spriteFrameCache->getSpriteFrameByName(spriteFrameName);
-            CCASSERT(frame != nullptr, "CCSpriteFrame must be non-NULL");
+            CCASSERT(frame != nullptr, StringUtils::format("CCSpriteFrame: %s must be non-NULL ", spriteFrameName.c_str()).c_str());
             if (frame == nullptr) break;
             
             ret = initWithSpriteFrame(frame, capInsets);
@@ -1059,7 +1060,7 @@ namespace ui {
         float originalScale = Node::getScaleX();
         if (_flippedX)
         {
-            originalScale = originalScale * -1.0;
+            originalScale = originalScale * -1.0f;
         }
         return originalScale;
     }
@@ -1069,7 +1070,7 @@ namespace ui {
         float originalScale = Node::getScaleY();
         if (_flippedY)
         {
-            originalScale = originalScale * -1.0;
+            originalScale = originalScale * -1.0f;
         }
         return originalScale;
     }

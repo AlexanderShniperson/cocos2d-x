@@ -150,8 +150,8 @@ public:
      If two nodes have the same LocalZOrder, then the node that was added first to the children's array will be in front of the other node in the array.
      
      Also, the Scene Graph is traversed using the "In-Order" tree traversal algorithm ( http://en.wikipedia.org/wiki/Tree_traversal#In-order )
-     And Nodes that have LocalZOder values < 0 are the "left" subtree
-     While Nodes with LocalZOder >=0 are the "right" subtree.
+     And Nodes that have LocalZOrder values < 0 are the "left" subtree
+     While Nodes with LocalZOrder >=0 are the "right" subtree.
      
      @see `setGlobalZOrder`
      @see `setVertexZ`
@@ -179,10 +179,10 @@ public:
     CC_DEPRECATED_ATTRIBUTE virtual int getZOrder() const { return getLocalZOrder(); }
 
     /**
-     Defines the oder in which the nodes are renderer.
+     Defines the order in which the nodes are renderer.
      Nodes that have a Global Z Order lower, are renderer first.
      
-     In case two or more nodes have the same Global Z Order, the oder is not guaranteed.
+     In case two or more nodes have the same Global Z Order, the order is not guaranteed.
      The only exception if the Nodes have a Global Z Order == 0. In that case, the Scene Graph order is used.
      
      By default, all nodes have a Global Z Order = 0. That means that by default, the Scene Graph order is used to render the nodes.
@@ -667,27 +667,6 @@ public:
      */
     virtual float getRotationSkewY() const;
     CC_DEPRECATED_ATTRIBUTE virtual float getRotationY() const { return getRotationSkewY(); }
-
-    /**
-     * Sets the arrival order when this node has a same ZOrder with other children.
-     *
-     * A node which called addChild subsequently will take a larger arrival order,
-     * If two children have the same Z order, the child with larger arrival order will be drawn later.
-     *
-     * @warning This method is used internally for localZOrder sorting, don't change this manually
-     *
-     * @param orderOfArrival   The arrival order.
-     */
-    void setOrderOfArrival(int orderOfArrival);
-    /**
-     * Returns the arrival order, indicates which children is added previously.
-     *
-     * @see `setOrderOfArrival(unsigned int)`
-     *
-     * @return The arrival order.
-     */
-    int getOrderOfArrival() const;
-
 
     /** @deprecated No longer needed
     * @lua NA
@@ -1918,8 +1897,6 @@ protected:
 
     GLProgramState *_glProgramState; ///< OpenGL Program State
 
-    int _orderOfArrival;            ///< used to preserve sequence while sorting children with the same localZOrder
-
     Scheduler *_scheduler;          ///< scheduler used to schedule timers and updates
 
     ActionManager *_actionManager;  ///< a pointer to ActionManager singleton, which is used to handle all the actions
@@ -1952,8 +1929,6 @@ protected:
     bool        _cascadeColorEnabled;
     bool        _cascadeOpacityEnabled;
 
-    static int s_globalOrderOfArrival;
-    
     // camera mask, it is visible only when _cameraMask & current camera' camera flag is true
     unsigned short _cameraMask;
     
