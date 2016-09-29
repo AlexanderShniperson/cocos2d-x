@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2014 Chukong Technologies Inc.
+ Copyright (c) 2013-2016 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -483,11 +483,9 @@ namespace ui {
         }
 
         applyBlendFunc();
-        if (getGLProgramState()) {
-            _scale9Image->setGLProgramState(getGLProgramState());
-        } else {
-            this->setState(_brightState);
-        }
+
+        this->setState(_brightState);
+
         if(this->_isPatch9)
         {
             size.width = size.width - 2;

@@ -42,6 +42,7 @@ AudioEngineTests::AudioEngineTests()
     ADD_TEST_CASE(AudioPerformanceTest);
     ADD_TEST_CASE(AudioSmallFileTest);
     ADD_TEST_CASE(AudioPauseResumeAfterPlay);
+    ADD_TEST_CASE(AudioPreloadSameFileMultipleTimes);
     ADD_TEST_CASE(AudioPlayFileInWritablePath);
     
     //FIXME: Please keep AudioSwitchStateTest to the last position since this test case doesn't work well on each platforms.
@@ -192,7 +193,7 @@ AudioEngineTestDemo::AudioEngineTestDemo()
 void AudioEngineTestDemo::onExit()
 {
     *_isDestroyed = true;
-    AudioEngine::stopAll();
+    AudioEngine::uncacheAll();
     TestCase::onExit();
 }
 
@@ -827,17 +828,19 @@ std::string AudioSmallFileTest::subtitle() const
 }
 
 /////////////////////////////////////////////////////////////////////////
-bool AudioPauseResumeAfterPlay::init()
+void AudioPauseResumeAfterPlay::onEnter()
 {
-    if (AudioEngineTestDemo::init())
+    AudioEngineTestDemo::onEnter();
+
+    int audioId = AudioEngine::play2d("audio/SoundEffectsFX009/FX082.mp3");
+    AudioEngine::pause(audioId);
+    AudioEngine::resume(audioId);
+    
+    for (int i = 0; i < 10; ++i)
     {
-        int audioId = AudioEngine::play2d("audio/SoundEffectsFX009/FX082.mp3");
         AudioEngine::pause(audioId);
         AudioEngine::resume(audioId);
-        return true;
     }
-    
-    return false;
 }
 
 std::string AudioPauseResumeAfterPlay::title() const
@@ -846,6 +849,35 @@ std::string AudioPauseResumeAfterPlay::title() const
 }
 
 std::string AudioPauseResumeAfterPlay::subtitle() const
+{
+    return "Should not crash";
+}
+
+/////////////////////////////////////////////////////////////////////////
+void AudioPreloadSameFileMultipleTimes::onEnter()
+{
+    AudioEngineTestDemo::onEnter();
+
+    for (int i = 0; i < 10; ++i)
+    {
+        AudioEngine::preload("audio/SoundEffectsFX009/FX082.mp3", [i](bool isSucceed){
+            log("111: %d preload %s", i, isSucceed ? "succeed" : "failed");
+            AudioEngine::preload("audio/SoundEffectsFX009/FX082.mp3", [i](bool isSucceed){
+                log("222: %d preload %s", i, isSucceed ? "succeed" : "failed");
+                AudioEngine::preload("audio/SoundEffectsFX009/FX082.mp3", [i](bool isSucceed){
+                    log("333: %d preload %s", i, isSucceed ? "succeed" : "failed");
+                });
+            });
+        });
+    }
+}
+
+std::string AudioPreloadSameFileMultipleTimes::title() const
+{
+    return "Preload same file multiple times";
+}
+
+std::string AudioPreloadSameFileMultipleTimes::subtitle() const
 {
     return "Should not crash";
 }

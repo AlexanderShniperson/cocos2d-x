@@ -108,6 +108,7 @@ NewLabelTests::NewLabelTests()
     ADD_TEST_CASE(LabelLocalizationTest);
 
     ADD_TEST_CASE(LabelIssue15214);
+    ADD_TEST_CASE(LabelIssue16293);
     ADD_TEST_CASE(LabelIssue16471);
 };
 
@@ -3200,6 +3201,27 @@ std::string LabelIssue15214::subtitle() const
 }
 
 //
+// LabelIssue16293
+//
+LabelIssue16293::LabelIssue16293()
+{
+    auto size = Director::getInstance()->getVisibleSize();
+    Label* label = Label::createWithTTF("012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789", "fonts/arial.ttf", 12);
+    label->setPosition(size.width/2, size.height/2);
+    this->addChild(label);
+}
+
+std::string LabelIssue16293::title() const
+{
+    return "Github Issue 16293";
+}
+
+std::string LabelIssue16293::subtitle() const
+{
+    return "No TextureAtlas resizes";
+}
+
+//
 // LabelIssue16471
 //
 LabelIssue16471::LabelIssue16471()
@@ -3232,3 +3254,4 @@ std::string LabelIssue16471::subtitle() const
 {
     return "Label should be yellow";
 }
+
