@@ -98,7 +98,7 @@ function SpineTestLayerFFD:ctor()
 end
 
 function SpineTestLayerFFD:init()
-  skeletonNode = sp.SkeletonAnimation:create("spine/goblins-ffd.json", "spine/goblins-ffd.atlas", 1.5)
+  skeletonNode = sp.SkeletonAnimation:create("spine/goblins.json", "spine/goblins.atlas", 1.5)
   skeletonNode:setAnimation(0, "walk", true)
   skeletonNode:setSkin("goblin")
     
@@ -141,6 +141,7 @@ function SpineTestMain()
         SpineTestLayerNormal.create,
         SpineTestLayerFFD.create,
     }
+    Helper.index = 1
 
     scene:addChild(SpineTestLayerNormal.create(), 0)
     scene:addChild(CreateBackMenuItem())

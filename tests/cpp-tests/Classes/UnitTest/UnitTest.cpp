@@ -131,7 +131,6 @@ void TemplateVectorTest::onEnter()
     Vector<Node*> vec4(createVector());
     for (const auto& child : vec4)
     {
-        CC_UNUSED_PARAM(child);
         CCASSERT(child->getReferenceCount() == 2, "child's reference count should be 2.");
     }
 
@@ -155,7 +154,6 @@ void TemplateVectorTest::onEnter()
 
     for (const auto& child : vec5)
     {
-        CC_UNUSED_PARAM(child);
         CCASSERT(child->getReferenceCount() == 2, "child's reference count is 2.");
     }
 
@@ -248,7 +246,6 @@ void TemplateVectorTest::onEnter()
     CCASSERT(vec7.size() == 20, "vec7's size is 20.");
     for (const auto& child : vec7)
     {
-        CC_UNUSED_PARAM(child);
         CCASSERT(child->getReferenceCount() == 2, "child's reference count is 2.");
     }
 
@@ -305,7 +302,6 @@ void TemplateVectorTest::onEnter()
 
     for (const auto& child : vecSelfAssign)
     {
-        CC_UNUSED_PARAM(child);
         CCASSERT(child->getReferenceCount() == 2, "child's reference count is 2.");
     }
 
@@ -314,7 +310,6 @@ void TemplateVectorTest::onEnter()
 
     for (const auto& child : vecSelfAssign)
     {
-        CC_UNUSED_PARAM(child);
         CCASSERT(child->getReferenceCount() == 2, "child's reference count is 2.");
     }
 
@@ -363,7 +358,6 @@ void TemplateMapTest::onEnter()
     Map<std::string, Node*> map2 = createMap();
     for (const auto& e : map2)
     {
-        CC_UNUSED_PARAM(e);
         CCASSERT(e.second->getReferenceCount() == 2, "e.second element's reference count is 2.");
     }
 
@@ -371,7 +365,6 @@ void TemplateMapTest::onEnter()
     Map<std::string, Node*> map3(map2);
     for (const auto& e : map3)
     {
-        CC_UNUSED_PARAM(e);
         CCASSERT(e.second->getReferenceCount() == 3, "e.second's reference count is 3.");
     }
 
@@ -383,7 +376,6 @@ void TemplateMapTest::onEnter()
     CCASSERT(unusedNode->getReferenceCount() == 1, "unusedNode's reference count is 1.");
     for (const auto& e : map4)
     {
-        CC_UNUSED_PARAM(e);
         CCASSERT(e.second->getReferenceCount() == 2, "e.second's reference count is 2.");
     }
 
@@ -392,7 +384,6 @@ void TemplateMapTest::onEnter()
     map5 = map4;
     for (const auto& e : map5)
     {
-        CC_UNUSED_PARAM(e);
         CCASSERT(e.second->getReferenceCount() == 3, "e.second's reference count is 3.");
     }
 
@@ -401,7 +392,6 @@ void TemplateMapTest::onEnter()
 
     for (const auto& e : map4)
     {
-        CC_UNUSED_PARAM(e);
         CCASSERT(e.second == map5.find(e.first)->second, "e.second can't be found in map5.");
     }
 
@@ -445,7 +435,6 @@ void TemplateMapTest::onEnter()
 
     // find
     auto nodeToFind = map4.find("10");
-    CC_UNUSED_PARAM(nodeToFind);
     CCASSERT(nodeToFind->second->getTag() == 1010, "nodeToFind's tag value is 1010.");
 
     // insert
@@ -491,7 +480,6 @@ void TemplateMapTest::onEnter()
 
     for (const auto& e : mapForClearCopy)
     {
-        CC_UNUSED_PARAM(e);
         CCASSERT(e.second->getReferenceCount() == 2, "e.second's reference count is 2.");
     }
 
@@ -513,7 +501,6 @@ void TemplateMapTest::onEnter()
 
     for (const auto& e : mapForSelfAssign)
     {
-        CC_UNUSED_PARAM(e);
         CCASSERT(e.second->getReferenceCount() == 2, "e.second's reference count is 2.");
     }
 
@@ -522,7 +509,6 @@ void TemplateMapTest::onEnter()
 
     for (const auto& e : mapForSelfAssign)
     {
-        CC_UNUSED_PARAM(e);
         CCASSERT(e.second->getReferenceCount() == 2, "e.second's reference's count is 2.");
     }
 }
@@ -620,9 +606,8 @@ std::string ValueTest::subtitle() const
     return "Value Test, should not crash";
 }
 
-void ValueTest::constFunc(const Value& value) const
+void ValueTest::constFunc(const Value& /*value*/) const
 {
-    
 }
 
 // UTFConversionTest
@@ -839,13 +824,13 @@ void UIHelperSubStringTest::onEnter()
         CC_ASSERT(Helper::getSubStringOfUTF8String(source, 7, 0) == "");
         CC_ASSERT(Helper::getSubStringOfUTF8String(source, 8, 0) == "");
         CC_ASSERT(Helper::getSubStringOfUTF8String(source, 8, 1) == "");
-        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 0, 1) == "这");
-        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 0, 4) == "这里是中");
-        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 0, 8) == "这里是中文测试例");
-        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 0, 100) == "这里是中文测试例");
-        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 2, 5) == "是中文测试");
-        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 6, 2) == "试例");
-        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 6, 100) == "试例");
+        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 0, 1) == "\xe8\xbf\x99");
+        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 0, 4) == "\xe8\xbf\x99\xe9\x87\x8c\xe6\x98\xaf\xe4\xb8\xad");
+        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 0, 8) == "\xe8\xbf\x99\xe9\x87\x8c\xe6\x98\xaf\xe4\xb8\xad\xe6\x96\x87\xe6\xb5\x8b\xe8\xaf\x95\xe4\xbe\x8b");
+        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 0, 100) == "\xe8\xbf\x99\xe9\x87\x8c\xe6\x98\xaf\xe4\xb8\xad\xe6\x96\x87\xe6\xb5\x8b\xe8\xaf\x95\xe4\xbe\x8b");
+        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 2, 5) == "\xe6\x98\xaf\xe4\xb8\xad\xe6\x96\x87\xe6\xb5\x8b\xe8\xaf\x95");
+        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 6, 2) == "\xe8\xaf\x95\xe4\xbe\x8b");
+        CC_ASSERT(Helper::getSubStringOfUTF8String(source, 6, 100) == "\xe8\xaf\x95\xe4\xbe\x8b");
 
         // Error: These cases cause "out of range" error
         CC_ASSERT(Helper::getSubStringOfUTF8String(source, 9, 0) == "");
